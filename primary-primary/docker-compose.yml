@@ -1,0 +1,44 @@
+version: '3.8'
+x-postgres-common:
+  &postgres-common
+  image: postgres:16
+  user: postgres
+  restart: always
+  healthcheck:
+    test: 'pg_isready -U user --dbname=postgres'
+    interval: 10s
+    timeout: 5s
+    retries: 5
+
+services:
+  postgres_node1:
+    <<: *postgres-common
+    ports:
+      - 5432:5432
+    networks:
+      - pgnetwork
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_DB: postgres
+      POSTGRES_PASSWORD: password
+    command: |
+      postgres 
+      -c wal_level=logical
+
+  postgres_node2:
+    <<: *postgres-common
+    ports:
+      - 5433:5432
+    networks:
+      - pgnetwork
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_DB: postgres
+      POSTGRES_PASSWORD: password
+    command: |
+      postgres 
+      -c wal_level=logical
+
+networks:
+  pgnetwork:
+    driver: bridge
