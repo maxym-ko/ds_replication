@@ -49,7 +49,13 @@ psql postgres://user:password@localhost:5433/postgres -c \
 "SELECT * FROM cars;" 
 ```
 
-#### Step 6: Kill Docker containers
+#### Step 6: Test via simple application
+```shell
+pip install -r ../requirements.txt
+python ../example.py
+```
+
+#### Step 7: Kill Docker containers
 ```shell
 docker-compose down -v
 ```
